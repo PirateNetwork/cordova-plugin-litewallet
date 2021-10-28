@@ -25,8 +25,8 @@
 
     <source-file src="src/android/LiteWallet.java" target-dir="src/com/rust/plugin/"/>
 
-    <source-file src="res/saplingoutput" target-dir="resources"/>
-    <source-file src="res/saplingspend" target-dir="resources"/>
+    <source-file src="res/saplingoutput_base64" target-dir="resources"/>
+    <source-file src="res/saplingspend_base64" target-dir="resources"/>
     <source-file src="res/commons-io-2.7.jar" target-dir="libs/"/>
 
     <source-file src="native/android/litewallet-jni/src/com/rust/litewalletjni/LiteWalletJni.java" target-dir="src/com/rust/litewalletjni/"/>
