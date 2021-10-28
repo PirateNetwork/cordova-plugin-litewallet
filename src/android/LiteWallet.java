@@ -36,25 +36,6 @@ public class LiteWallet extends CordovaPlugin {
 
         Context context = this.cordova.getActivity().getApplicationContext();   
                 
-          if ((sSaplingoutput64.length()==0) || (sSaplingspend64.length()==0 )) {           
-              InputStream saplingOutputFile = getClass().getClassLoader().getResourceAsStream("saplingoutput_base64");                                           
-              sSaplingoutput64 = IOUtils.toString(saplingOutputFile, StandardCharsets.ISO_8859_1);
-              saplingOutputFile.close();
-            
-              InputStream saplingSpendFile = getClass().getClassLoader().getResourceAsStream("saplingspend_base64");
-              sSaplingspend64 = IOUtils.toString(saplingSpendFile, StandardCharsets.ISO_8859_1);
-              saplingSpendFile.close();                         
-          }
-        }
-        catch(Exception e)
-        {
-          Log.e ("LITEWALLET","execute() load sapling parameters exception\n"+e.toString() );
-          e.printStackTrace();
-          callbackContext.error("Error: Sapling parameters could not be loaded.");
-          return false;
-        }
-        
-
         if (action.equals("sync")) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
@@ -71,7 +52,7 @@ public class LiteWallet extends CordovaPlugin {
 
         } else if (action.equals("syncStatus")) {
             //Throttle back on the nuber of sync requests 
-            //FIXIT Reduce the calls in the main thread
+            //FIXIT Reduce the calls from the main thread
             iSyncCounter++;
             if (iSyncCounter<30)
             {              
@@ -122,8 +103,6 @@ public class LiteWallet extends CordovaPlugin {
             return true;
 
         } else if (action.equals("info")) {        
-            //Throttle back on the nuber of info requests -- Must fix in the main code thats calling it
-            //all the time
             iInfoCounter++;
             if (iInfoCounter<30)
             {
@@ -283,8 +262,6 @@ public class LiteWallet extends CordovaPlugin {
             return true;
 
         } else if (action.equals("list")) {
-            //Throttle back on the nuber of info requests -- Must fix in the main code thats calling it
-            //all the time
             iListCounter++;
             if (iListCounter<30)
             {
