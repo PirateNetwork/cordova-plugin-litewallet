@@ -22,6 +22,9 @@
         <param name="android-package" value="com.litewallet.plugin.LiteWallet"/>
       </feature>
     </config-file>
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.INTERNET" android:required="false" />
+    </config-file>    
 
     <source-file src="src/android/LiteWallet.java" target-dir="src/com/rust/plugin/"/>
 
