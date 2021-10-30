@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-litewallet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Implement litewallet for cordova applications",
   "cordova": {
     "id": "cordova-plugin-litewallet",
