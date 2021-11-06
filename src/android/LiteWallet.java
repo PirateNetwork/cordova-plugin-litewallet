@@ -22,12 +22,7 @@ import java.nio.charset.StandardCharsets;
 import com.rust.litewalletjni.LiteWalletJni;
 
 public class LiteWallet extends CordovaPlugin {
-    //Refresh network parameters approx every 15 seconds
-    //Fixit: Reduce the number of calls from Skull-Island wallet
-    static int iSyncCounter=0;
-    static int iInfoCounter=0;
-    static int iListCounter=0;
-    
+    //Contains the Base64 encoded versions of the input files
     String sSaplingoutput64="";
     String sSaplingspend64="";
     
@@ -35,6 +30,9 @@ public class LiteWallet extends CordovaPlugin {
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
         Context context = this.cordova.getActivity().getApplicationContext();   
+        
+        //Possible reduce the number of 'list' calls from the main thread?
+        Log.i ("LITEWALLET","execute() "+action); 
                 
         if (action.equals("sync")) {
             cordova.getThreadPool().execute(new Runnable() {
@@ -51,16 +49,6 @@ public class LiteWallet extends CordovaPlugin {
             return true;
 
         } else if (action.equals("syncStatus")) {
-            //Throttle back on the nuber of sync requests 
-            //FIXIT Reduce the calls from the main thread
-            iSyncCounter++;
-            if (iSyncCounter<30)
-            {              
-              callbackContext.success( 0 ); // Thread-safe.
-              return true;
-            }
-            iSyncCounter=0;
-            
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                   try {
@@ -103,14 +91,6 @@ public class LiteWallet extends CordovaPlugin {
             return true;
 
         } else if (action.equals("info")) {        
-            iInfoCounter++;
-            if (iInfoCounter<30)
-            {
-              callbackContext.success( 0 ); // Thread-safe.
-              return true;
-            }
-            iInfoCounter=0;
-            
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                   try {
@@ -262,14 +242,6 @@ public class LiteWallet extends CordovaPlugin {
             return true;
 
         } else if (action.equals("list")) {
-            iListCounter++;
-            if (iListCounter<30)
-            {
-              callbackContext.success( 0 ); // Thread-safe.
-              return true;
-            }
-            iListCounter=0;
-            
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                   try {
@@ -356,6 +328,7 @@ public class LiteWallet extends CordovaPlugin {
                         obj.put("saved", saved);
                         jsonText = obj.toString();
                     } catch (JSONException e) {
+                        Log.e ("LITEWALLET","execute() save exception\n"+e.toString() );
                         e.printStackTrace();
                         callbackContext.success("Error: JSON error!!!");
                     }
@@ -406,6 +379,7 @@ public class LiteWallet extends CordovaPlugin {
                         obj.put("exists", exists);
                         jsonText = obj.toString();
                     } catch (JSONException e) {
+                        Log.e ("LITEWALLET","execute() exists exception\n"+e.toString() );
                         e.printStackTrace();
                         callbackContext.success("Error: JSON error!!!");
                     };
