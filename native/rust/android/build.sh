@@ -11,7 +11,7 @@ export OPENSSL_DIR=$(pwd)/openssl-1.1.1e/openssl-1.1.1e/aarch64
 cargo build --target aarch64-linux-android --release
 
 export AR=$NDK/arm/bin/arm-linux-androideabi-ar
-export CC=$NDK/NDK/arm/bin/arm-linux-androideabi-clang
+export CC=$NDK/arm/bin/arm-linux-androideabi-clang
 export OPENSSL_DIR=$(pwd)/openssl-1.1.1e/openssl-1.1.1e/armv7
 cargo build --target armv7-linux-androideabi --release
 
