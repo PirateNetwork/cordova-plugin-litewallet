@@ -304,10 +304,11 @@ public class LiteWallet extends CordovaPlugin {
             return true;
 
         } else if (action.equals("unlock")) {
+            final String arg1 = data.getString(0);
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                   try {
-                    callbackContext.success(LiteWalletJni.execute("unlock", "")); // Thread-safe.
+                    callbackContext.success(LiteWalletJni.execute("unlock", arg1)); // Thread-safe.
                   } catch (Exception e) {
                     Log.e ("LITEWALLET","execute() unlock exception\n"+e.toString() );
                     e.printStackTrace();

@@ -99,9 +99,8 @@ module.exports = {
         cordova.exec(successCallback, errorCallback, "LiteWallet", "lock", args);
     },
 
-    unlock: function (successCallback, errorCallback) {
-      args = []
-        cordova.exec(successCallback, errorCallback, "LiteWallet", "unlock", args);
+    unlock: function (arg, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "LiteWallet", "unlock", [args]);
     },
 
     save: function (args, successCallback, errorCallback) {
