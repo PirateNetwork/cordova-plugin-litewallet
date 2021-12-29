@@ -141,7 +141,11 @@ pub fn init_from_b64(server_uri: String, params: String, base64_data: String, sa
     let (mut config, _latest_block_height) = match LightClientConfig::create(server) {
         Ok((c, h)) => (c, h),
         Err(e) => {
-            return format!("Error: {}", e);
+            let data = json!({
+                "initalized": false,
+                "error": format!("{}", e)
+            });
+            return serde_json::to_string(&data).unwrap();
         }
     };
 
@@ -150,31 +154,47 @@ pub fn init_from_b64(server_uri: String, params: String, base64_data: String, sa
 
     let decoded_bytes = match decode(&base64_data) {
         Ok(b) => b,
-        Err(e) => { return format!("Error: Decoding Base64: {}", e); }
+        Err(e) => {
+            let data = json!({
+                "initalized": false,
+                "error": format!("Decoding Base64 {}", e)
+            });
+            return serde_json::to_string(&data).unwrap();
+        }
     };
 
     let lightclient = match LightClient::read_from_buffer(&config, &decoded_bytes[..]) {
         Ok(mut l) => {
             match l.set_sapling_params(&decode(&sapling_output_b64).unwrap(), &decode(&sapling_spend_b64).unwrap()) {
                 Ok(_) => l,
-                Err(e) => return format!("Error: {}", e)
+                Err(e) => {
+                    let data = json!({
+                        "initalized": false,
+                        "error": format!("{}", e)
+                    });
+                    return serde_json::to_string(&data).unwrap();
+                }
             }
         },
         Err(e) => {
-            return format!("Error: {}", e);
-        }
-    };
 
-    let seed = match lightclient.do_seed_phrase() {
-        Ok(s) => s.dump(),
-        Err(e) => {
-            return format!("Error: {}", e);
+            let data = json!({
+                "initalized": false,
+                "error": format!("{}", e)
+            });
+            return serde_json::to_string(&data).unwrap();
         }
     };
 
     LIGHTCLIENT.lock().unwrap().replace(Some(Arc::new(lightclient)));
 
-    seed
+    let data = json!({
+        "initalized": true,
+        "error": "none"
+    });
+
+    serde_json::to_string(&data).unwrap()
+
 }
 
 pub fn save_to_b64() -> String {
