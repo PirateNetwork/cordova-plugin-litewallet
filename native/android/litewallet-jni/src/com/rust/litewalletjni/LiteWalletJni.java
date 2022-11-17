@@ -32,9 +32,9 @@ public class LiteWalletJni
 {
 
     private static native String initlogging();
-    private static native String initnew(final String serveruri, final String params, final String saplingOutputb64, final String saplingSpendb64);
-    private static native String initfromseed(final String serveruri, final String params, final String seed, final String birthday, final String saplingOutputb64, final String saplingSpendb64);
-    private static native String initfromb64(final String serveruri, final String params, final String datab64, final String saplingOutputb64, final String saplingSpendb64);
+    private static native String initnew(final String serveruri, final String saplingOutputb64, final String saplingSpendb64);
+    private static native String initfromseed(final String serveruri, final String seed, final String birthday, final String saplingOutputb64, final String saplingSpendb64);
+    private static native String initfromb64(final String serveruri, final String datab64, final String saplingOutputb64, final String saplingSpendb64);
     private static native String save();
 
     public static native String execute(final String cmd, final String args);
@@ -45,7 +45,7 @@ public class LiteWalletJni
         System.loadLibrary("litewallet-jni");
     }
 
-    public static String initalize(final String coin, final String serveruri, final String params, final String saplingOutputb64, final String saplingSpendb64, final Context context) {
+    public static String initalize(final String coin, final String serveruri, final String saplingOutputb64, final String saplingSpendb64, final Context context) {
       initlogging();
       String walletSeed = "Error: Wallet file not found!!!";
 
@@ -57,7 +57,7 @@ public class LiteWalletJni
           walletStream.read(wallet);
           walletStream.close();
           final String datab64 = Base64.encodeToString(wallet, Base64.NO_WRAP);
-          walletSeed = initfromb64(serveruri, params, datab64, saplingOutputb64, saplingSpendb64 );
+          walletSeed = initfromb64(serveruri, datab64, saplingOutputb64, saplingSpendb64 );
           }
           catch(IOException e) {
               e.printStackTrace();
@@ -67,15 +67,15 @@ public class LiteWalletJni
       return walletSeed;
     }
 
-    public static String walletNew(final String serveruri, final String params, final String saplingOutputb64, final String saplingSpendb64, final Context context) {
+    public static String walletNew(final String serveruri, final String saplingOutputb64, final String saplingSpendb64, final Context context) {
         String walletSeed = "";
-        walletSeed = initnew(serveruri, params, saplingOutputb64, saplingSpendb64); // Thread-safe.
+        walletSeed = initnew(serveruri, saplingOutputb64, saplingSpendb64); // Thread-safe.
         return walletSeed;
     }
 
-    public static String walletRestore(final String serveruri, final String params, final String seed, final String birthday, final String saplingOutputb64, final String saplingSpendb64, final Context context) {
+    public static String walletRestore(final String serveruri, final String seed, final String birthday, final String saplingOutputb64, final String saplingSpendb64, final Context context) {
         String walletSeed = "";
-        walletSeed = initfromseed(serveruri, params, seed, birthday, saplingOutputb64, saplingSpendb64); // Thread-safe.
+        walletSeed = initfromseed(serveruri, seed, birthday, saplingOutputb64, saplingSpendb64); // Thread-safe.
         return walletSeed;
     }
 

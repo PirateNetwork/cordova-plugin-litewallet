@@ -25,15 +25,15 @@ public class LiteWallet extends CordovaPlugin {
     //Contains the Base64 encoded versions of the input files
     String sSaplingoutput64="";
     String sSaplingspend64="";
-    
+
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
-        Context context = this.cordova.getActivity().getApplicationContext();   
-        
+        Context context = this.cordova.getActivity().getApplicationContext();
+
         //Possible reduce the number of 'list' calls from the main thread?
-        Log.i ("LITEWALLET","execute() "+action); 
-                
+        Log.i ("LITEWALLET","execute() "+action);
+
         if (action.equals("sync")) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
@@ -90,7 +90,7 @@ public class LiteWallet extends CordovaPlugin {
             });
             return true;
 
-        } else if (action.equals("info")) {        
+        } else if (action.equals("info")) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                   try {
@@ -113,7 +113,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() encryptionstatus exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: encryptionstatus error");
-                  }                    
+                  }
                 }
             });
 
@@ -128,7 +128,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() balance exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: balance error");
-                  }                    
+                  }
                 }
             });
 
@@ -143,7 +143,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() notes exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: notes error");
-                  }                     
+                  }
                 }
             });
 
@@ -159,7 +159,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() privateKey exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: privateKey error");
-                  }                     
+                  }
                 }
             });
 
@@ -174,7 +174,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() new ZAddress exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: new ZAddress error");
-                  }                      
+                  }
                 }
             });
 
@@ -189,7 +189,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() new TAddress exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: new TAddress error");
-                  }                       
+                  }
                 }
             });
 
@@ -204,7 +204,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() seed exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: seed error");
-                  }                    
+                  }
                 }
             });
 
@@ -220,7 +220,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() send exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: send error");
-                  }                     
+                  }
                 }
             });
 
@@ -235,7 +235,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() height exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: height error");
-                  }                    
+                  }
                 }
             });
 
@@ -250,7 +250,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() list exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: list error");
-                  }                  
+                  }
                 }
             });
 
@@ -266,7 +266,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() encrypt exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: encrypt error");
-                  }                      
+                  }
                 }
             });
 
@@ -282,7 +282,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() decrypt exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: decrypt error");
-                  }                      
+                  }
                 }
             });
 
@@ -313,7 +313,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() unlock exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: unlock error");
-                  }                    
+                  }
                 }
             });
             return true;
@@ -347,7 +347,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() getseedphrase exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: getseedphrase error");
-                  }                      
+                  }
                 }
             });
 
@@ -363,7 +363,7 @@ public class LiteWallet extends CordovaPlugin {
                     Log.e ("LITEWALLET","execute() checkseedphrase exception\n"+e.toString() );
                     e.printStackTrace();
                     callbackContext.error("Error: checkseedphrase error");
-                  }                     
+                  }
                 }
             });
 
@@ -389,24 +389,23 @@ public class LiteWallet extends CordovaPlugin {
             });
             return true;
 
-        } else if (action.equals("initalize")) {            
+        } else if (action.equals("initalize")) {
             final String arg1 = data.getString(0);
             final String arg2 = data.getString(1);
-            final String arg3 = data.getString(2);
-            
+
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                   try {
-                      if ((sSaplingoutput64.length()==0) || (sSaplingspend64.length()==0 )) {           
+                      if ((sSaplingoutput64.length()==0) || (sSaplingspend64.length()==0 )) {
                           InputStream saplingOutputFile = getClass().getClassLoader().getResourceAsStream("saplingoutput_base64");
                           sSaplingoutput64 = IOUtils.toString(saplingOutputFile, StandardCharsets.ISO_8859_1);
                           saplingOutputFile.close();
-                          
+
                           InputStream saplingSpendFile = getClass().getClassLoader().getResourceAsStream("saplingspend_base64");
                           sSaplingspend64 = IOUtils.toString(saplingSpendFile, StandardCharsets.ISO_8859_1);
-                          saplingSpendFile.close();                         
+                          saplingSpendFile.close();
                       }
-                      callbackContext.success(LiteWalletJni.initalize(arg1, arg2, arg3, sSaplingoutput64, sSaplingspend64, context));
+                      callbackContext.success(LiteWalletJni.initalize(arg1, arg2, sSaplingoutput64, sSaplingspend64, context));
                   }
                   catch(Exception e) {
                       Log.e ("LITEWALLET","execute() initalize exception\n"+e.toString() );
@@ -420,21 +419,20 @@ public class LiteWallet extends CordovaPlugin {
 
         } else if (action.equals("newWallet")) {
             final String arg1 = data.getString(0);
-            final String arg2 = data.getString(1);
 
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                   try {
-                      if ((sSaplingoutput64.length()==0) || (sSaplingspend64.length()==0 )) {           
+                      if ((sSaplingoutput64.length()==0) || (sSaplingspend64.length()==0 )) {
                           InputStream saplingOutputFile = getClass().getClassLoader().getResourceAsStream("saplingoutput_base64");
                           sSaplingoutput64 = IOUtils.toString(saplingOutputFile, StandardCharsets.ISO_8859_1);
                           saplingOutputFile.close();
-                          
+
                           InputStream saplingSpendFile = getClass().getClassLoader().getResourceAsStream("saplingspend_base64");
                           sSaplingspend64 = IOUtils.toString(saplingSpendFile, StandardCharsets.ISO_8859_1);
-                          saplingSpendFile.close();                         
+                          saplingSpendFile.close();
                       }
-                      callbackContext.success(LiteWalletJni.walletNew(arg1, arg2, sSaplingoutput64, sSaplingspend64, context));
+                      callbackContext.success(LiteWalletJni.walletNew(arg1, sSaplingoutput64, sSaplingspend64, context));
                   }
                   catch(Exception e) {
                       Log.e ("LITEWALLET","execute() newWallet exception\n"+e.toString() );
@@ -449,21 +447,20 @@ public class LiteWallet extends CordovaPlugin {
             final String arg1 = data.getString(0);
             final String arg2 = data.getString(1);
             final String arg3 = data.getString(2);
-            final String arg4 = data.getString(3);
-            
+
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {
                     try {
-                        if ((sSaplingoutput64.length()==0) || (sSaplingspend64.length()==0 )) {           
+                        if ((sSaplingoutput64.length()==0) || (sSaplingspend64.length()==0 )) {
                             InputStream saplingOutputFile = getClass().getClassLoader().getResourceAsStream("saplingoutput_base64");
                             sSaplingoutput64 = IOUtils.toString(saplingOutputFile, StandardCharsets.ISO_8859_1);
                             saplingOutputFile.close();
-                          
+
                             InputStream saplingSpendFile = getClass().getClassLoader().getResourceAsStream("saplingspend_base64");
                             sSaplingspend64 = IOUtils.toString(saplingSpendFile, StandardCharsets.ISO_8859_1);
-                            saplingSpendFile.close();                         
+                            saplingSpendFile.close();
                         }
-                        callbackContext.success(LiteWalletJni.walletRestore(arg1, arg2, arg3, arg4, sSaplingoutput64, sSaplingspend64, context)); // Thread-safe.
+                        callbackContext.success(LiteWalletJni.walletRestore(arg1, arg2, arg3, sSaplingoutput64, sSaplingspend64, context)); // Thread-safe.
                     }
                     catch(Exception e) {
                       Log.e ("LITEWALLET","execute() restoreWallet exception\n"+e.toString() );
@@ -475,7 +472,7 @@ public class LiteWallet extends CordovaPlugin {
             return true;
 
         } else {
-            Log.e ("LITEWALLET","execute() Unsupported action: "+action); 
+            Log.e ("LITEWALLET","execute() Unsupported action: "+action);
             return false;
         }
     }

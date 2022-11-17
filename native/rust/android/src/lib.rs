@@ -47,17 +47,11 @@ pub unsafe extern "C" fn Java_com_rust_litewalletjni_LiteWalletJni_checkseedphra
 }
 
 #[no_mangle]
-pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initnew(env: JNIEnv, _: JObject, j_serveruri: JString, j_params: JString,
+pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initnew(env: JNIEnv, _: JObject, j_serveruri: JString,
         j_sapling_output: JString, j_sapling_spend: JString) -> jstring {
     let server_uri = CString::from(
         CStr::from_ptr(
             env.get_string(j_serveruri).unwrap().as_ptr()
-        )
-    ).into_string().unwrap();
-
-    let params = CString::from(
-        CStr::from_ptr(
-            env.get_string(j_params).unwrap().as_ptr()
         )
     ).into_string().unwrap();
 
@@ -72,7 +66,7 @@ pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initnew(env: JNIE
         )
     ).into_string().unwrap();
 
-    let seed = rustlib::init_new(server_uri, params, sapling_output, sapling_spend);
+    let seed = rustlib::init_new(server_uri, sapling_output, sapling_spend);
 
     let output = env.new_string(seed.as_str()).unwrap();
     output.into_inner()
@@ -80,17 +74,11 @@ pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initnew(env: JNIE
 
 
 #[no_mangle]
-pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initfromseed(env: JNIEnv, _: JObject, j_serveruri: JString, j_params: JString,
+pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initfromseed(env: JNIEnv, _: JObject, j_serveruri: JString,
         j_seed: JString, j_birthday: JString, j_sapling_output: JString, j_sapling_spend: JString) -> jstring {
     let server_uri = CString::from(
         CStr::from_ptr(
             env.get_string(j_serveruri).unwrap().as_ptr()
-        )
-    ).into_string().unwrap();
-
-    let params = CString::from(
-        CStr::from_ptr(
-            env.get_string(j_params).unwrap().as_ptr()
         )
     ).into_string().unwrap();
 
@@ -117,7 +105,7 @@ pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initfromseed(env:
         )
     ).into_string().unwrap();
 
-    let seed = rustlib::init_from_seed(server_uri, params, seed, birthday, sapling_output, sapling_spend);
+    let seed = rustlib::init_from_seed(server_uri, seed, birthday, sapling_output, sapling_spend);
 
     let output = env.new_string(seed.as_str()).unwrap();
     output.into_inner()
@@ -125,7 +113,7 @@ pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initfromseed(env:
 
 
 #[no_mangle]
-pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initfromb64(env: JNIEnv, _: JObject, j_serveruri: JString, j_params: JString,
+pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initfromb64(env: JNIEnv, _: JObject, j_serveruri: JString,
         j_base64: JString, j_sapling_output: JString, j_sapling_spend: JString) -> jstring {
     let base64 = CString::from(
         CStr::from_ptr(
@@ -136,12 +124,6 @@ pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initfromb64(env: 
     let server_uri = CString::from(
         CStr::from_ptr(
             env.get_string(j_serveruri).unwrap().as_ptr()
-        )
-    ).into_string().unwrap();
-
-    let params = CString::from(
-        CStr::from_ptr(
-            env.get_string(j_params).unwrap().as_ptr()
         )
     ).into_string().unwrap();
 
@@ -156,7 +138,7 @@ pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initfromb64(env: 
         )
     ).into_string().unwrap();
 
-    let seed = rustlib::init_from_b64(server_uri, params, base64, sapling_output, sapling_spend);
+    let seed = rustlib::init_from_b64(server_uri, base64, sapling_output, sapling_spend);
 
     let output = env.new_string(seed.as_str()).unwrap();
     output.into_inner()

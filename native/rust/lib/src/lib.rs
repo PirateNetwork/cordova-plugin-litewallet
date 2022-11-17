@@ -11,70 +11,26 @@ use rand::{Rng, rngs::OsRng};
 extern crate serde;
 #[macro_use] extern crate serde_json;
 extern crate serde_derive;
-use serde_derive::Deserialize;
 
-use zecwalletlitelib::{commands, lightclient::{LightClient, LightClientConfig}};
-
-
-#[derive(Deserialize, Clone)]
-pub struct JsAddressParameters {
-    pub coin_type: String,
-    pub hrp_sapling_extended_spending_key: String,
-    pub hrp_sapling_extended_full_viewing_key: String,
-    pub hrp_sapling_payment_address: String,
-    #[serde(with = "hex_serde")]
-    pub b58_pubkey_address_prefix: [u8; 2],
-    #[serde(with = "hex_serde")]
-    pub b58_script_address_prefix: [u8; 2],
-}
-
-
-pub fn set_address_params(mut config: LightClientConfig, params: &str) -> LightClientConfig {
-
-    let js_params: JsAddressParameters = match serde_json::from_str(&params) {
-        Ok(js) => js,
-        Err(_) => {return config}
-    };
-
-    let ct: u32 = match js_params.coin_type.parse() {
-        Ok(s) => s,
-        Err(_) => return config
-    };
-
-    if js_params.hrp_sapling_extended_spending_key.len() == 0 {return config}
-    if js_params.hrp_sapling_extended_full_viewing_key.len() == 0 {return config}
-    if js_params.hrp_sapling_payment_address.len() == 0 {return config}
-    if js_params.b58_pubkey_address_prefix.len() != 2 {return config}
-    if js_params.b58_script_address_prefix.len() != 2 {return config}
-
-    LightClientConfig::set_coin_type(&mut config, ct);
-    LightClientConfig::set_hrp_sapling_extended_spending_key(&mut config, js_params.hrp_sapling_extended_spending_key);
-    LightClientConfig::set_hrp_sapling_extended_full_viewing_key(&mut config, js_params.hrp_sapling_extended_full_viewing_key);
-    LightClientConfig::set_hrp_sapling_payment_address(&mut config, js_params.hrp_sapling_payment_address);
-    LightClientConfig::set_b58_pubkey_address_prefix(&mut config, js_params.b58_pubkey_address_prefix);
-    LightClientConfig::set_b58_script_address_prefix(&mut config, js_params.b58_pubkey_address_prefix);
-
-    config
-}
-
+use piratewalletlitelib::{commands, lightclient::LightClient};
+use piratewalletlitelib::MainNetwork;
+use piratewalletlitelib::lightclient::lightclient_config::LightClientConfig;
 
 // We'll use a MUTEX to store a global lightclient instance,
 // so we don't have to keep creating it. We need to store it here, in rust
 // because we can't return such a complex structure back to JS
 lazy_static! {
-    static ref LIGHTCLIENT: Mutex<RefCell<Option<Arc<LightClient>>>> = Mutex::new(RefCell::new(None));
+
+    static ref LIGHTCLIENT: Mutex<RefCell<Option<Arc<LightClient<MainNetwork>>>>> = Mutex::new(RefCell::new(None));
 }
-pub fn init_new(server_uri: String, params: String, sapling_output_b64: String, sapling_spend_b64: String) -> String {
-    let server = LightClientConfig::get_server_or_default(Some(server_uri));
-    let (mut config, latest_block_height) = match LightClientConfig::create(server) {
+pub fn init_new(server_uri: String, sapling_output_b64: String, sapling_spend_b64: String) -> String {
+    let server = LightClientConfig::<MainNetwork>::get_server_or_default(Some(server_uri));
+    let (config, latest_block_height) = match LightClientConfig::create(MainNetwork, server) {
         Ok((c, h)) => (c, h),
         Err(e) => {
             return format!("Error: {}", e);
         }
     };
-
-    //Set Encoding Specifications
-    config = set_address_params(config, params.as_str());
 
     let lightclient = match LightClient::new(&config, latest_block_height) {
         Ok(mut l) => {
@@ -88,7 +44,7 @@ pub fn init_new(server_uri: String, params: String, sapling_output_b64: String, 
         }
     };
 
-    let seed = match lightclient.do_seed_phrase() {
+    let seed = match lightclient.do_seed_phrase_sync() {
         Ok(s) => s.dump(),
         Err(e) => {
             return format!("Error: {}", e);
@@ -100,17 +56,14 @@ pub fn init_new(server_uri: String, params: String, sapling_output_b64: String, 
     seed
 }
 
-pub fn init_from_seed(server_uri: String, params: String, seed: String, birthday: u64, sapling_output_b64: String, sapling_spend_b64: String) -> String {
-    let server = LightClientConfig::get_server_or_default(Some(server_uri));
-    let (mut config, _latest_block_height) = match LightClientConfig::create(server) {
+pub fn init_from_seed(server_uri: String, seed: String, birthday: u64, sapling_output_b64: String, sapling_spend_b64: String) -> String {
+    let server = LightClientConfig::<MainNetwork>::get_server_or_default(Some(server_uri));
+    let (config, _latest_block_height) = match LightClientConfig::create(MainNetwork, server) {
         Ok((c, h)) => (c, h),
         Err(e) => {
             return format!("Error: {}", e);
         }
     };
-
-    //Set Encoding Specifications
-    config = set_address_params(config, params.as_str());
 
     let lightclient = match LightClient::new_from_phrase(seed, &config, birthday, false) {
         Ok(mut l) => {
@@ -124,7 +77,7 @@ pub fn init_from_seed(server_uri: String, params: String, seed: String, birthday
         }
     };
 
-    let seed = match lightclient.do_seed_phrase() {
+    let seed = match lightclient.do_seed_phrase_sync() {
         Ok(s) => s.dump(),
         Err(e) => {
             return format!("Error: {}", e);
@@ -136,9 +89,9 @@ pub fn init_from_seed(server_uri: String, params: String, seed: String, birthday
     seed
 }
 
-pub fn init_from_b64(server_uri: String, params: String, base64_data: String, sapling_output_b64: String, sapling_spend_b64: String) -> String {
-    let server = LightClientConfig::get_server_or_default(Some(server_uri));
-    let (mut config, _latest_block_height) = match LightClientConfig::create(server) {
+pub fn init_from_b64(server_uri: String, base64_data: String, sapling_output_b64: String, sapling_spend_b64: String) -> String {
+    let server = LightClientConfig::<MainNetwork>::get_server_or_default(Some(server_uri));
+    let (config, _latest_block_height) = match LightClientConfig::create(MainNetwork, server) {
         Ok((c, h)) => (c, h),
         Err(e) => {
             let data = json!({
@@ -148,9 +101,6 @@ pub fn init_from_b64(server_uri: String, params: String, base64_data: String, sa
             return serde_json::to_string(&data).unwrap();
         }
     };
-
-    //Set Encoding Specifications
-    config = set_address_params(config, params.as_str());
 
     let decoded_bytes = match decode(&base64_data) {
         Ok(b) => b,
@@ -199,7 +149,7 @@ pub fn init_from_b64(server_uri: String, params: String, base64_data: String, sa
 
 pub fn save_to_b64() -> String {
     // Return the wallet as a base64 encoded string
-    let lightclient: Arc<LightClient>;
+    let lightclient: Arc<LightClient<MainNetwork>>;
     {
         let lc = LIGHTCLIENT.lock().unwrap();
 
@@ -210,7 +160,7 @@ pub fn save_to_b64() -> String {
         lightclient = lc.borrow().as_ref().unwrap().clone();
     };
 
-    match lightclient.do_save_to_buffer() {
+    match lightclient.do_save_to_buffer_sync() {
         Ok(buf) => encode(&buf),
         Err(e) => {
             format!("Error: {}", e)
@@ -221,7 +171,7 @@ pub fn save_to_b64() -> String {
 pub fn execute(cmd: String, args_list: String) -> String {
     let resp: String;
     {
-        let lightclient: Arc<LightClient>;
+        let lightclient: Arc<LightClient<MainNetwork>>;
         {
             let lc = LIGHTCLIENT.lock().unwrap();
 
