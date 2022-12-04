@@ -389,6 +389,22 @@ public class LiteWallet extends CordovaPlugin {
             });
             return true;
 
+        } else if (action.equals("checkserver")) {
+            final String arg1 = data.getString(0);
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                  try {
+                    callbackContext.success(LiteWalletJni.checkserver(arg1)); // Thread-safe.
+                  } catch (Exception e) {
+                    Log.e ("LITEWALLET","execute() checkserver exception\n"+e.toString() );
+                    e.printStackTrace();
+                    callbackContext.error("Error: checkserver error");
+                  }
+                }
+            });
+
+            return true;
+
         } else if (action.equals("initalize")) {
             final String arg1 = data.getString(0);
             final String arg2 = data.getString(1);

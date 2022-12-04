@@ -47,6 +47,18 @@ pub unsafe extern "C" fn Java_com_rust_litewalletjni_LiteWalletJni_checkseedphra
 }
 
 #[no_mangle]
+pub unsafe extern "C" fn Java_com_rust_litewalletjni_LiteWalletJni_checkserver(env: JNIEnv, _: JObject, input: JString) -> jstring {
+
+    let input: String = env.get_string(input).expect("Couldn't get java string!").into();
+    //generate key
+    let results = rustlib::check_server(input);
+    //Create string to be passed back to Java
+    let output = env.new_string(format!("{}", results)).expect("Couldn't create java string!");
+    // Finally, extract the raw pointer to return.
+    output.into_inner()
+}
+
+#[no_mangle]
 pub unsafe extern fn Java_com_rust_litewalletjni_LiteWalletJni_initnew(env: JNIEnv, _: JObject, j_serveruri: JString,
         j_sapling_output: JString, j_sapling_spend: JString) -> jstring {
     let server_uri = CString::from(

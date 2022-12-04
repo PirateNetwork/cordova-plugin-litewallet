@@ -1,6 +1,10 @@
 /*global cordova, module*/
 
 module.exports = {
+    checkserver: function (args, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "LiteWallet", "checkserver", args);
+    },
+
     exists: function (args, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "LiteWallet", "exists", [args]);
     },

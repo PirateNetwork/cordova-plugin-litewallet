@@ -37,6 +37,7 @@ public class LiteWalletJni
     private static native String initfromb64(final String serveruri, final String datab64, final String saplingOutputb64, final String saplingSpendb64);
     private static native String save();
 
+    public static native String checkserver(final String serveruri);
     public static native String execute(final String cmd, final String args);
     public static native String getseedphrase();
     public static native String checkseedphrase(final String input);

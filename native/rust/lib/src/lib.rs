@@ -23,6 +23,21 @@ lazy_static! {
 
     static ref LIGHTCLIENT: Mutex<RefCell<Option<Arc<LightClient<MainNetwork>>>>> = Mutex::new(RefCell::new(None));
 }
+
+pub fn check_server(server_uri: String) -> String {
+    if LightClientConfig::<MainNetwork>::check_server(server_uri) {
+        let data = json!({
+            "server_ready": true,
+        });
+        return serde_json::to_string(&data).unwrap();
+    }
+
+    let data = json!({
+        "server_ready": false,
+    });
+    return serde_json::to_string(&data).unwrap();
+}
+
 pub fn init_new(server_uri: String, sapling_output_b64: String, sapling_spend_b64: String) -> String {
     let server = LightClientConfig::<MainNetwork>::get_server_or_default(Some(server_uri));
     let (config, latest_block_height) = match LightClientConfig::create(MainNetwork, server) {
