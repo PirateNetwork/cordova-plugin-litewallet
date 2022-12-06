@@ -40,14 +40,16 @@
 
     <config-file target="config.xml" parent="/widget">
       <feature name="LiteWallet">
-        <param name="ios-package" value="HWPLiteWallet" />
+        <param name="ios-package" value="LiteWallet" />
       </feature>
     </config-file>
 
-    <header-file src="src/ios/HWPLiteWallet.h" target-dir="LiteWalletPlugin"/>
-    <source-file src="src/ios/HWPLiteWallet.m" target-dir="LiteWalletPlugin"/>
-    <header-file src="native/rust/src/litewallet_rust.h" target-dir="LiteWalletPlugin"/>
-    <source-file src="native/ios/liblitewallet_rust-ios.a" framework="true" target-dir="LiteWalletPlugin" compiler-flags="-fno-objc-arc"/>
+    <header-file src="src/ios/LiteWallet.h" />
+    <source-file src="src/ios/LiteWallet.m" />
+    <header-file src="native/ios/rust.h" />
+    <source-file src="native/ios/librustios.a" framework="true" compiler-flags="-fno-objc-arc"/>
+    <resource-file src="res/saplingoutput_base64" target="saplingoutput_base64"/>
+    <resource-file src="res/saplingspend_base64" target="saplingspend_base64"/>
 
     <framework src="Foundation.framework" />
     <framework src="Security.framework" />

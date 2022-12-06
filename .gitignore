@@ -2,6 +2,3 @@
 cargo-config.toml
 /native/rust/target
 openssl*
-
-#ios - not built yet
-/src/ios

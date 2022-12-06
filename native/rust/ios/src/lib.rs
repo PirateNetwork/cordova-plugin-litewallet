@@ -10,7 +10,44 @@ pub extern fn rust_free(s: *mut c_char) {
 }
 
 #[no_mangle]
-pub extern fn init_new(server_uri: *const c_char, sapling_output: *const c_char, sapling_spend: *const c_char) -> *mut c_char {
+pub extern fn getseedphrase() -> *mut c_char  {
+
+    let results = rustlib::get_seed_phrase();
+    return CString::new(results).unwrap().into_raw();
+}
+
+#[no_mangle]
+pub extern fn checkseedphrase(seed: *const c_char) -> *mut c_char {
+
+    let c_str = unsafe { CStr::from_ptr(seed) };
+    let seed = match c_str.to_str() {
+        Err(_) => {
+            return CString::new("Error parsing 'seed' argument".to_owned()).unwrap().into_raw()
+        },
+        Ok(string) => string,
+    }.to_string();
+
+    let results = rustlib::check_seed_phrase(&seed);
+    return CString::new(results).unwrap().into_raw();
+}
+
+#[no_mangle]
+pub extern fn checkserver(uri: *const c_char) -> *mut c_char {
+
+    let c_str = unsafe { CStr::from_ptr(uri) };
+    let uri = match c_str.to_str() {
+        Err(_) => {
+            return CString::new("Error parsing 'uri' argument".to_owned()).unwrap().into_raw()
+        },
+        Ok(string) => string,
+    }.to_string();
+
+    let results = rustlib::check_server(uri);
+    return CString::new(results).unwrap().into_raw();
+}
+
+#[no_mangle]
+pub extern fn initnew(server_uri: *const c_char, sapling_output: *const c_char, sapling_spend: *const c_char) -> *mut c_char {
     let c_str = unsafe { CStr::from_ptr(server_uri) };
     let server_uri = match c_str.to_str() {
         Err(_) => {
@@ -41,7 +78,7 @@ pub extern fn init_new(server_uri: *const c_char, sapling_output: *const c_char,
 }
 
 #[no_mangle]
-pub extern fn initfromseed(server_uri: *const c_char, seed: *const c_char, birthday: *const c_char, 
+pub extern fn initfromseed(server_uri: *const c_char, seed: *const c_char, birthday: *const c_char,
         sapling_output: *const c_char, sapling_spend: *const c_char) -> *mut c_char {
     let c_str = unsafe { CStr::from_ptr(server_uri) };
     let server_uri = match c_str.to_str() {
@@ -88,7 +125,7 @@ pub extern fn initfromseed(server_uri: *const c_char, seed: *const c_char, birth
 
 
 #[no_mangle]
-pub extern fn initfromb64(server_uri: *const c_char, base64: *const c_char, 
+pub extern fn initfromb64(server_uri: *const c_char, base64: *const c_char,
         sapling_output: *const c_char, sapling_spend: *const c_char) -> *mut c_char {
     let c_str = unsafe { CStr::from_ptr(server_uri) };
     let server_uri = match c_str.to_str() {
