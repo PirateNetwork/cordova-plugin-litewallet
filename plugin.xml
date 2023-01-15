@@ -33,6 +33,7 @@
 
     <source-file src="native/android/litewallet-jni/libs/arm64-v8a/liblitewallet-jni.so" target-dir="app/src/main/jniLibs/arm64-v8a/" />
     <source-file src="native/android/litewallet-jni/libs/x86/liblitewallet-jni.so" target-dir="app/src/main/jniLibs/x86/" />
+    <source-file src="native/android/litewallet-jni/libs/x86_64/liblitewallet-jni.so" target-dir="app/src/main/jniLibs/x86_64/" />
     <source-file src="native/android/litewallet-jni/libs/armeabi-v7a/liblitewallet-jni.so" target-dir="app/src/main/jniLibs/armeabi-v7a/" />
   </platform>
 
