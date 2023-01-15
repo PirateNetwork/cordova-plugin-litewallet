@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 jni = { version = "0.10.2", default-features = false }
 
-piratewalletlitelib = { git="https://github.com/piratenetwork/piratewallet-light-cli", default-features=false, rev="82c0e18fe94056fdb5182257c36694b01aa18eb7" }
+piratewalletlitelib = { git="https://github.com/piratenetwork/piratewallet-light-cli", default-features=false, rev="08828164f0f8ad06f259bd334ea2974156f8f079" }
 
 #Test local changes to librustzcash
 #piratewalletlitelib = { path = '../../../../piratewallet-light-cli/lib' , default-features=false }

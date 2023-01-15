@@ -7,4 +7,3 @@ members = [
 
 [profile.release]
 debug = false
-strip = true

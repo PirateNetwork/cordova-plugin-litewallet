@@ -813,15 +813,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "212d0f5754cb6769937f4501cc0e67f4f4483c8d2c3e1e922ee9edbe4ab4c7c0"
 
 [[package]]
-name = "ed25519"
-version = "1.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e9c280362032ea4203659fc489832d0204ef09f247a0506f170dafcac08c369"
-dependencies = [
- "signature",
-]
-
-[[package]]
 name = "either"
 version = "1.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -840,7 +831,7 @@ dependencies = [
 [[package]]
 name = "equihash"
 version = "0.1.0"
-source = "git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e#acd5b23c4cafde11e5b34cad4ad0fe607c19765e"
+source = "git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6#f2d093fd760e59b950e93e9a4cac329f745aacf6"
 dependencies = [
  "blake2b_simd",
  "byteorder",
@@ -1919,7 +1910,7 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 [[package]]
 name = "piratewalletlitelib"
 version = "0.1.0"
-source = "git+https://github.com/piratenetwork/piratewallet-light-cli?rev=82c0e18fe94056fdb5182257c36694b01aa18eb7#82c0e18fe94056fdb5182257c36694b01aa18eb7"
+source = "git+https://github.com/piratenetwork/piratewallet-light-cli?rev=08828164f0f8ad06f259bd334ea2974156f8f079#08828164f0f8ad06f259bd334ea2974156f8f079"
 dependencies = [
  "arr_macro",
  "base58",
@@ -1956,7 +1947,7 @@ dependencies = [
  "webpki-roots",
  "zcash_client_backend",
  "zcash_encoding",
- "zcash_note_encryption 0.1.0 (git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e)",
+ "zcash_note_encryption 0.1.0 (git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6)",
  "zcash_primitives",
  "zcash_proofs",
 ]
@@ -2760,12 +2751,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "signature"
-version = "1.6.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "74233d3b3b2f6d4b006dc19dee745e73e2a6bfb6f93607cd3b02bd5b00797d7c"
-
-[[package]]
 name = "slab"
 version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2801,11 +2786,10 @@ dependencies = [
 
 [[package]]
 name = "sodiumoxide"
-version = "0.2.7"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e26be3acb6c2d9a7aac28482586a7856436af4cfe7100031d219de2d2ecb0028"
+checksum = "585232e78a4fc18133eef9946d3080befdf68b906c51b621531c37e91787fa2b"
 dependencies = [
- "ed25519",
  "libc",
  "libsodium-sys",
  "serde",
@@ -3700,7 +3684,7 @@ dependencies = [
 [[package]]
 name = "zcash_client_backend"
 version = "0.5.0"
-source = "git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e#acd5b23c4cafde11e5b34cad4ad0fe607c19765e"
+source = "git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6#f2d093fd760e59b950e93e9a4cac329f745aacf6"
 dependencies = [
  "base64 0.13.1",
  "bech32",
@@ -3718,14 +3702,14 @@ dependencies = [
  "rand_core 0.6.4",
  "subtle 2.4.1",
  "time 0.2.27",
- "zcash_note_encryption 0.1.0 (git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e)",
+ "zcash_note_encryption 0.1.0 (git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6)",
  "zcash_primitives",
 ]
 
 [[package]]
 name = "zcash_encoding"
 version = "0.1.0"
-source = "git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e#acd5b23c4cafde11e5b34cad4ad0fe607c19765e"
+source = "git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6#f2d093fd760e59b950e93e9a4cac329f745aacf6"
 dependencies = [
  "byteorder",
  "nonempty",
@@ -3746,7 +3730,7 @@ dependencies = [
 [[package]]
 name = "zcash_note_encryption"
 version = "0.1.0"
-source = "git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e#acd5b23c4cafde11e5b34cad4ad0fe607c19765e"
+source = "git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6#f2d093fd760e59b950e93e9a4cac329f745aacf6"
 dependencies = [
  "chacha20",
  "chacha20poly1305",
@@ -3757,7 +3741,7 @@ dependencies = [
 [[package]]
 name = "zcash_primitives"
 version = "0.6.0"
-source = "git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e#acd5b23c4cafde11e5b34cad4ad0fe607c19765e"
+source = "git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6#f2d093fd760e59b950e93e9a4cac329f745aacf6"
 dependencies = [
  "aes",
  "bip0039",
@@ -3787,13 +3771,13 @@ dependencies = [
  "sha2 0.9.9",
  "subtle 2.4.1",
  "zcash_encoding",
- "zcash_note_encryption 0.1.0 (git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e)",
+ "zcash_note_encryption 0.1.0 (git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6)",
 ]
 
 [[package]]
 name = "zcash_proofs"
 version = "0.6.0"
-source = "git+https://github.com/piratenetwork/librustzcash?rev=acd5b23c4cafde11e5b34cad4ad0fe607c19765e#acd5b23c4cafde11e5b34cad4ad0fe607c19765e"
+source = "git+https://github.com/piratenetwork/librustzcash?rev=f2d093fd760e59b950e93e9a4cac329f745aacf6#f2d093fd760e59b950e93e9a4cac329f745aacf6"
 dependencies = [
  "bellman",
  "blake2b_simd",
