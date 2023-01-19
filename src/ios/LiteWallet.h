@@ -4,6 +4,7 @@
 
 - (void)sync:(CDVInvokedUrlCommand*)command;
 - (void)syncStatus:(CDVInvokedUrlCommand*)command;
+- (void)syncStop:(CDVInvokedUrlCommand*)command;
 - (void)rescan:(CDVInvokedUrlCommand*)command;
 - (void)clear:(CDVInvokedUrlCommand*)command;
 - (void)info:(CDVInvokedUrlCommand*)command;

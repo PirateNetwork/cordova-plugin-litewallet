@@ -31,6 +31,11 @@ module.exports = {
         cordova.exec(successCallback, errorCallback, "LiteWallet", "syncStatus", args);
     },
 
+    syncStop: function (successCallback, errorCallback) {
+      args = []
+        cordova.exec(successCallback, errorCallback, "LiteWallet", "syncStop", args);
+    },
+
     rescan: function (successCallback, errorCallback) {
       args = []
         cordova.exec(successCallback, errorCallback, "LiteWallet", "rescan", args);

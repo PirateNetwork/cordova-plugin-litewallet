@@ -62,6 +62,20 @@ public class LiteWallet extends CordovaPlugin {
             });
             return true;
 
+        } else if (action.equals("syncStop")) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                  try {
+                    callbackContext.success(LiteWalletJni.execute("stop", "")); // Thread-safe.
+                  } catch (Exception e) {
+                    Log.e ("LITEWALLET","execute() syncStop exception\n"+e.toString() );
+                    e.printStackTrace();
+                    callbackContext.error("Error: syncStop error");
+                  }
+                }
+            });
+            return true;
+
         } else if (action.equals("rescan")) {
             cordova.getThreadPool().execute(new Runnable() {
                 public void run() {

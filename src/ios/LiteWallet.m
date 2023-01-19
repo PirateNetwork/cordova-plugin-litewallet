@@ -45,6 +45,27 @@
     }];
 }
 
+- (void)syncStop:(CDVInvokedUrlCommand*)command
+{
+    [self.commandDelegate runInBackground:^{
+        //Execute command
+
+        char *executeCmd = (char*)[@"stop" UTF8String];
+        char *cmdArg = (char*)[@"" UTF8String];
+
+        NSString *cmd = [NSString stringWithUTF8String:executeCmd];
+        NSLog(@"Executing Command %@", cmd);
+        NSString* resultMsg = [NSString stringWithUTF8String:execute(executeCmd, cmdArg)];
+        NSLog(@"Command complete");
+
+        //rust_free(executeCmd);
+        //rust_free(cmdArg);
+
+        CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:resultMsg];
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
 - (void)rescan:(CDVInvokedUrlCommand*)command
 {
     [self.commandDelegate runInBackground:^{
