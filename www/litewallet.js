@@ -103,12 +103,20 @@ module.exports = {
         cordova.exec(successCallback, errorCallback, "LiteWallet", "decrypt", [args]);
     },
 
+    decryptOldWallet: function (arg, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "LiteWallet", "decrypt", [args]);
+    },
+
     lock: function (successCallback, errorCallback) {
       args = []
         cordova.exec(successCallback, errorCallback, "LiteWallet", "lock", args);
     },
 
     unlock: function (args, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "LiteWallet", "unlock", [args]);
+    },
+
+    unlockOldWallet: function (arg, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "LiteWallet", "unlock", [args]);
     },
 
